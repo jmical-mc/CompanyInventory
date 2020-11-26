@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace CompanyInventory.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CompanyController : ControllerBase
     {
         public CompanyController()
