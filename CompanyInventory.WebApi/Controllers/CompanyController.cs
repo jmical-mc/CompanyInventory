@@ -9,16 +9,16 @@ namespace CompanyInventory.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class CompanyController : ControllerBase
     {
-        public WeatherForecastController()
+        public CompanyController()
         {
         }
 
-        // [HttpGet]
-        // public IEnumerable<string> Get()
-        // {
-        //    
-        // }
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("works");
+        }
     }
 }
