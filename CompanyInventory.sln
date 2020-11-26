@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyInventory", "CompanyInventory\CompanyInventory.csproj", "{FA0B4AC0-C41B-401E-894C-DD4C1A024778}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyInventory.WebApi", "CompanyInventory.WebApi\CompanyInventory.WebApi.csproj", "{FA0B4AC0-C41B-401E-894C-DD4C1A024778}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
