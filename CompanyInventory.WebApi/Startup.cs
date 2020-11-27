@@ -1,3 +1,5 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using CompanyInventory.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
+using CompanyInventory.Repository;
 
 namespace CompanyInventory.WebApi
 {
@@ -29,6 +33,8 @@ namespace CompanyInventory.WebApi
 
             services.AddDbContext<CompanyInventoryContext>(opt
                 => opt.UseSqlServer(_configuration.GetConnectionString("Default")));
+
+            services.AddAutofac();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -52,6 +58,11 @@ namespace CompanyInventory.WebApi
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+        
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterRepositories();
         }
     }
 }
