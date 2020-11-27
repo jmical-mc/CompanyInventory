@@ -8,7 +8,7 @@ namespace CompanyInventory.Database.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
-        public Position Position { get; set; }
+        public JobTitle JobTitle { get; set; }
 
         public virtual Company Company { get; set; }
         public long CompanyId { get; set; }

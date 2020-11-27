@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyInventory.Database.Migrations
 {
     [DbContext(typeof(CompanyInventoryContext))]
-    [Migration("20201126191221_Initial")]
+    [Migration("20201126221915_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,19 +59,19 @@ namespace CompanyInventory.Database.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<byte>("JobTitle")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<byte>("Position")
-                        .HasColumnType("tinyint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("CompanyInventory.Database.Entities.Employee", b =>

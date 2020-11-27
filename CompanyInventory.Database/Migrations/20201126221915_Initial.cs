@@ -22,7 +22,7 @@ namespace CompanyInventory.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employee",
+                name: "Employees",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -30,14 +30,14 @@ namespace CompanyInventory.Database.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     BirthDate = table.Column<DateTime>(type: "date", nullable: false),
-                    Position = table.Column<byte>(type: "tinyint", nullable: false),
+                    JobTitle = table.Column<byte>(type: "tinyint", nullable: false),
                     CompanyId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employee", x => x.Id);
+                    table.PrimaryKey("PK_Employees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employee_Companies_CompanyId",
+                        name: "FK_Employees_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
@@ -45,15 +45,15 @@ namespace CompanyInventory.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_CompanyId",
-                table: "Employee",
+                name: "IX_Employees_CompanyId",
+                table: "Employees",
                 column: "CompanyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "Companies");

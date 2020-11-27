@@ -11,6 +11,7 @@ namespace CompanyInventory.Database
         }
 
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,7 +35,7 @@ namespace CompanyInventory.Database
                     .HasMaxLength(500)
                     .IsRequired(true);
                 
-                entity.Property(p => p.Position)
+                entity.Property(p => p.JobTitle)
                     .HasColumnType("tinyint")
                     .IsRequired(true);
                 

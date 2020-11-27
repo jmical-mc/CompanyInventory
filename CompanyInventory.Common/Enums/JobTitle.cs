@@ -1,6 +1,6 @@
 ﻿namespace CompanyInventory.Common.Enums
 {
-    public enum Position
+    public enum JobTitle
     {
         Admin = 1,
         Developer = 2,
