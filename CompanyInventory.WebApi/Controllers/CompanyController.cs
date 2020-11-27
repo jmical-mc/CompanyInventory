@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CompanyInventory.Models.Company;
+using CompanyInventory.Repository.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyInventory.WebApi.Controllers
 {
@@ -6,14 +8,35 @@ namespace CompanyInventory.WebApi.Controllers
     [Route("api/[controller]")]
     public class CompanyController : ControllerBase
     {
-        public CompanyController()
+        private readonly ICompanyRepository _companyRepository;
+
+        public CompanyController(ICompanyRepository companyRepository)
         {
+            _companyRepository = companyRepository;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] CompanyRequest model)
         {
-            return Ok("works");
+            return Ok("Id");
+        }
+        
+        [HttpPost("search")]
+        public IActionResult Search([FromBody] object request)
+        {
+            return Ok("result");
+        }
+        
+        [HttpPut("update/{id}")]
+        public IActionResult Update(long id,[FromBody] object request)
+        {
+            return Ok("result");
+        }
+        
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(long id)
+        {
+            return Ok("result");
         }
     }
 }
