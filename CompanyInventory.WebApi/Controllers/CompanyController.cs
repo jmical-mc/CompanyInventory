@@ -16,7 +16,7 @@ namespace CompanyInventory.WebApi.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create([FromBody] CompanyRequest model)
+        public IActionResult Create([FromBody] NewCompanyRequest model)
         {
             return Ok("Id");
         }

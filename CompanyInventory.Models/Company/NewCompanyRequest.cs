@@ -3,7 +3,7 @@ using CompanyInventory.Models.Employee;
 
 namespace CompanyInventory.Models.Company
 {
-    public class CompanyRequest
+    public class NewCompanyRequest
     {
         public string Name { get; set; }
         public short FoundationYear { get; set; }
