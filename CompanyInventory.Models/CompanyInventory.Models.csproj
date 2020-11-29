@@ -8,4 +8,8 @@
       <ProjectReference Include="..\CompanyInventory.Common\CompanyInventory.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
+    </ItemGroup>
+
 </Project>
