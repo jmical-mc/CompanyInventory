@@ -48,7 +48,6 @@ namespace CompanyInventory.Repository.Repositories
 
             return await Context.Companies
                 .AsNoTracking()
-                .AsExpandable()
                 .Include(i => i.Employees)
                 .Where(predicate)
                 .Select(s => new CompanyResult
@@ -70,9 +69,14 @@ namespace CompanyInventory.Repository.Repositories
         {
             var company = await GetByIdAsync(id);
 
+            if (company == null)
+            {
+                throw new Exception("Company does not exist.");
+            }
+
             UpdateCompanyModel(company, model);
 
-            UpdateAsync(company);
+            await UpdateAsync(company);
 
             await SaveChangesAsync();
         }
@@ -101,10 +105,10 @@ namespace CompanyInventory.Repository.Repositories
 
             if (!string.IsNullOrWhiteSpace(model.Keyword))
             {
-                predicate.And(a => a.Name.Contains(model.Keyword, StringComparison.OrdinalIgnoreCase)
+                predicate.And(a => a.Name.ToLower().Contains(model.Keyword.ToLower())
                                    || a.Employees.Any(x =>
-                                       x.FirstName.Contains(model.Keyword, StringComparison.OrdinalIgnoreCase)
-                                       || x.LastName.Contains(model.Keyword, StringComparison.OrdinalIgnoreCase)));
+                                       x.FirstName.ToLower().Contains(model.Keyword.ToLower())
+                                       || x.LastName.ToLower().Contains(model.Keyword.ToLower())));
             }
 
             return predicate;
@@ -127,6 +131,11 @@ namespace CompanyInventory.Repository.Repositories
         public async Task DeleteAsync(long id)
         {
             var company = await GetByIdAsync(id);
+
+            if (company == null)
+            {
+                throw new Exception("Company does not exist.");
+            }
 
             await RemoveAsync(company);
 
