@@ -36,6 +36,10 @@ namespace CompanyInventory.Models.Employee
                 .NotNull()
                 .WithMessage("Ensure that you have entered date of birth");
             
+            RuleFor(x => x.BirthDate)
+                .Must(m => m <= DateTime.Now)
+                .WithMessage("Date of birth cannot be future");
+            
             RuleFor(x => x.JobTitle)
                 .NotNull()
                 .WithMessage("Ensure that you have entered job title");

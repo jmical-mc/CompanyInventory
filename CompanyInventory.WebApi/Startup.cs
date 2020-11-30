@@ -9,13 +9,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Net;
+using System.Threading.Tasks;
 using CompanyInventory.Common;
 using CompanyInventory.Common.Consts;
 using CompanyInventory.Repository;
 using CompanyInventory.WebApi.Handlers;
 using FluentValidation.AspNetCore;
+using LaYumba.Functional;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Converters;
+using System;
+using CompanyInventory.Models.Company;
+using CompanyInventory.WebApi.Configuration;
+using Newtonsoft.Json;
 
 namespace CompanyInventory.WebApi
 {
@@ -30,12 +38,17 @@ namespace CompanyInventory.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddFluentValidation();
-            
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(opts => { opts.SerializerSettings.Converters.Add(new StringEnumConverter()); });
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CompanySearchValidator>());
 
-            AddSwagger(services);
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(opts =>
+                {
+                    opts.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    opts.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                });
+
+            services.AddSwagger();
 
             services.AddDbContext<CompanyInventoryContext>(opt
                 => opt.UseSqlServer(_configuration.GetConnectionString("Default")));
@@ -48,16 +61,15 @@ namespace CompanyInventory.WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseExceptionHandler(builder =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                builder.Run(async context => { await context.SetExceptionResponseAsync(); });
+            });
 
             InitTasks(app);
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Company Inventory API V1"); });
-
+            app.UseSwaggerSchema();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -80,24 +92,6 @@ namespace CompanyInventory.WebApi
                 var context = serviceScope.ServiceProvider.GetRequiredService<CompanyInventoryContext>();
                 context.Database.Migrate();
             }
-        }
-        
-        private void AddSwagger(IServiceCollection services)
-        {
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Company Inventory API", Version = "v1"});
-
-                c.AddSecurityDefinition(Schemes.basic, new OpenApiSecurityScheme
-                {
-                    Name = Headers.authorizationHeaderName,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = Schemes.basic,
-                    In = ParameterLocation.Header
-                });
-            });
-            
-            services.AddSwaggerGenNewtonsoftSupport();
         }
     }
 }

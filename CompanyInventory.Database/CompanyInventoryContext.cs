@@ -13,6 +13,16 @@ namespace CompanyInventory.Database
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=CompanyInventory;Trusted_Connection=True;");
+            }
+            
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Company>(entity =>

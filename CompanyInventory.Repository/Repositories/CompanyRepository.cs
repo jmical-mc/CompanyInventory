@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using CompanyInventory.Common.Validators;
 using CompanyInventory.Database;
 using CompanyInventory.Database.Entities;
 using CompanyInventory.Models.Company;
@@ -23,7 +25,7 @@ namespace CompanyInventory.Repository.Repositories
             var result = await AddAsync(new Company
             {
                 Name = model.Name,
-                FoundationYear = model.FoundationYear,
+                FoundationYear = (short)model.FoundationYear,
                 Employees = model.Employees
                     .Select(s => new Employee
                     {
@@ -69,11 +71,8 @@ namespace CompanyInventory.Repository.Repositories
         {
             var company = await GetByIdAsync(id);
 
-            if (company == null)
-            {
-                throw new Exception("Company does not exist.");
-            }
-
+            ExceptionFuncs.IsNull(company, "Company does not exist.", HttpStatusCode.UnprocessableEntity);
+            
             UpdateCompanyModel(company, model);
 
             await UpdateAsync(company);
@@ -117,7 +116,7 @@ namespace CompanyInventory.Repository.Repositories
         private void UpdateCompanyModel(Company company, NewCompanyRequest model)
         {
             company.Name = model.Name;
-            company.FoundationYear = model.FoundationYear;
+            company.FoundationYear = (short)model.FoundationYear;
             company.Employees = model.Employees
                 .Select(s => new Employee
                 {
@@ -132,10 +131,7 @@ namespace CompanyInventory.Repository.Repositories
         {
             var company = await GetByIdAsync(id);
 
-            if (company == null)
-            {
-                throw new Exception("Company does not exist.");
-            }
+            ExceptionFuncs.IsNull(company, "Company does not exist.", HttpStatusCode.UnprocessableEntity);
 
             await RemoveAsync(company);
 

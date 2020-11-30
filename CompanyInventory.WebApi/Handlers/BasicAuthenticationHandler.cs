@@ -46,7 +46,7 @@ namespace CompanyInventory.WebApi.Handlers
             {
                 var credentials = DecodeAuthHeader();
 
-                user = GetUser(credentials[0], credentials[1]);
+                user = await Task.Run(() => GetUser(credentials[0], credentials[1]));
             }
             catch
             {
